@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('saludar')
-  saludar(): string {
-    return 'Bienvenido al deploy';
+  saludar() {
+    return { texto: 'Bienvenido al deploy' };
   }
 }
