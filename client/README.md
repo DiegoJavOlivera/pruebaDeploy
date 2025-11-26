@@ -1,59 +1,82 @@
-# Client
+# 🚀 Guía de Despliegue de Frontend en Vercel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+Esta guía detalla paso a paso cómo desplegar un frontend (Angular) en Vercel y conectarlo con su backend.
 
-## Development server
+---
 
-To start a local development server, run:
+## 1. Registro y Vinculación
+Lo primero es iniciar sesión en [Vercel](https://vercel.com/). Seleccioná la opción **Continue with GitHub**.
 
-```bash
-ng serve
-```
+![Login Vercel](https://github.com/user-attachments/assets/254985d1-5349-4464-82e1-699ef03067f5)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Es probable que te pida autorización para acceder a tus repositorios. Confirmá la conexión.
 
-## Code scaffolding
+![Autorizar GitHub](https://github.com/user-attachments/assets/f6cea1a5-0705-4e41-a4b4-cdc37a030639)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 2. Crear Nuevo Proyecto
+Una vez dentro del dashboard de Vercel, andá al botón **Add New...** y seleccioná **Project**.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+![Crear Proyecto](https://github.com/user-attachments/assets/a23ddf21-14b6-4c18-9830-175cc3b7c156)
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 3. Importar Repositorio
+Buscá en la lista el repositorio donde tenés guardado tu código y hacé clic en **Import**.
 
-To build the project run:
+![Elegir Repositorio](https://github.com/user-attachments/assets/c38c3868-9ba5-4ed2-b002-f86383f022bf)
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 4. Configurar Directorio Raíz (Root Directory)
+**⚠️ Paso Importante:** Si tu proyecto no está en la raíz del repositorio (por ejemplo, tenés una carpeta `backend` y otra `client`), tenés que editar el **Root Directory**.
 
-## Running unit tests
+Hacé clic en **Edit** y seleccioná la carpeta de tu frontend (ej: `client`).
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+![Root Directory](https://github.com/user-attachments/assets/c297a28c-68ed-48ad-a81e-06f110d984df)
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 5. Configurar la Salida (Output Directory)
+Vercel necesita saber dónde guarda Angular los archivos compilados.
 
-For end-to-end (e2e) testing, run:
+1.  En tu editor (VS Code), corré el comando `ng build` para generar la carpeta de distribución.
+    ![Comando Build](https://github.com/user-attachments/assets/e91950d5-211f-499f-bef9-1c8bc8c9227e)
 
-```bash
-ng e2e
-```
+2.  Observá la estructura que se generó dentro de la carpeta `dist`. Generalmente es `dist/nombre-proyecto/browser`.
+    ![Estructura Dist](https://github.com/user-attachments/assets/c756ba5c-9347-4028-a9c6-717a7f20f0cd)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+3.  Hacé clic derecho en la carpeta `browser` y seleccioná **Copiar ruta de acceso relativa** (Copy Relative Path).
+    ![Copiar Ruta](https://github.com/user-attachments/assets/9a01aecf-89cc-457f-a271-0cffb1dac7c7)
 
-## Additional Resources
+4.  Volvé a Vercel, en la sección **Build and Output Settings**. Activá la opción **Output Directory** y pegá la ruta que copiaste (ej: `dist/client/browser`).
+    ![Configurar Output](https://github.com/user-attachments/assets/43302df7-18ef-4f67-9cb0-aaa4b5df6d63)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 6. Variables de Entorno
+Para que tu frontend se pueda comunicar con el backend que subiste a Render, necesitás configurar la URL de la API.
+
+Desplegá la sección **Environment Variables**:
+* **Key:** El nombre de la variable que usás en tu `environment.ts` (ej: `apiUrl`).
+* **Value:** La URL de tu backend en Render (ej: `https://tu-deploy.onrender.com`).
+
+![Variables de Entorno](https://github.com/user-attachments/assets/0357f971-535b-4329-a80d-18259e746530)
+
+---
+
+## 7. Despliegue Final y URLs
+
+Hacé clic en **Deploy**. Vercel comenzará a construir tu aplicación. Si todo sale bien, verás la pantalla del **Production Deployment** con el **Status** en **Ready**.
+
+![Dashboard Final Vercel](https://github.com/user-attachments/assets/8c3c2ce3-a5a5-4d69-89a8-709ac9074d4e)
+
+### 📌 Diferencia de URLs
+
+En la sección **Domains**, verás dos tipos de URL:
+
+| Tipo de URL | Ejemplo (Línea superior) | Descripción |
+| :--- | :--- | :--- |
+| **Dinámica** | `prueba-deploy-uq3b-98tsmpof7-nataladiez-projects.vercel.app` | Es la URL **específica** de esta versión del *deployment*. Cambia con cada nuevo *commit* que se sube al repositorio. Útil para verificar cambios específicos. |
+| **Estática/Principal** | `prueba-deploy-uq3b.vercel.app` | Es la URL **permanente** y la que debés usar para acceder a tu proyecto de forma habitual. Siempre apunta al último *deployment* exitoso. |
